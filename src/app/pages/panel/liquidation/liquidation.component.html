@@ -1,0 +1,54 @@
+<div id="liquidation" class="container-fluid animated fadeIn">
+  <app-header title="Liquidações"></app-header>
+  <section>
+    <nb-card [nbSpinner]="loginRequest" nbSpinnerStatus="primary" class="mt">
+      <nb-card-body>
+        <header>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="form">
+                <p class="text-uppercase">Filtrar por</p>
+                <div class="row form">
+                  <div class="col-md-3 col-sm-12">
+                    <nb-select (selectedChange)="filterStatus($event)" placeholder="Situação Liquidação"
+                      [(selected)]="selectedItem">
+                      <nb-option value="">Situação Liquidação</nb-option>
+                      <nb-option *ngFor="let item of status" value="{{item.IdStatusCessionario}}">{{item.Descricao}}
+                      </nb-option>
+                    </nb-select>
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <nb-select (selectedChange)="filterStatus($event)" placeholder="Cedente"
+                      [(selected)]="selectedItem">
+                      <nb-option value="">Cedente</nb-option>
+                      <nb-option value="">Cedente</nb-option>
+                      <nb-option value="">Cedente</nb-option>
+                      <nb-option *ngFor="let item of status" value="{{item.IdStatusCessionario}}">{{item.Descricao}}
+                      </nb-option>
+                    </nb-select>
+                  </div>
+                  <div class="col-md-4 col-sm-12">
+                    <div class="input-search">
+                      <label for="search"><i class="fa fa-calendar"></i></label>
+                      <input style="width: 100%" placeholder="Selecione uma data início / fim"
+                        (change)="filterDate($event)" type="text" ngxDaterangepickerMd
+                        class="input-full-width input-md input-rectangle" [locale]="locale" startKey="start"
+                        endKey="end" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+              <button type="button" class="btn btn-clear btn-image text-uppercase" (click)="export('cessoes')">
+                <img src="../../../../assets/images/export.png" /> Exportar</button>
+            </div>
+          </div>
+        </header>
+        <section>
+          <ng2-smart-table class="table table-default" [settings]="settings" [source]="items"></ng2-smart-table>
+        </section>
+      </nb-card-body>
+    </nb-card>
+  </section>
+</div>

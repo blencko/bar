@@ -1,0 +1,20 @@
+@import './assets/sass/variables';
+@import './assets/sass/fonts';
+@import './assets/sass/fonts.layout.css';
+@import 'themes';
+
+@import '~@nebular/theme/styles/globals';
+@import '~@nebular/bootstrap/styles/globals';
+
+@include nb-install() {
+  @include nb-theme-global();
+  @include nb-bootstrap-global();
+};
+
+@import './assets/sass/components';
+@import './assets/sass/layouts';
+
+
+@import './assets/sass/responsive';
+
+/* You can add global styles to this file, and also import other style files */

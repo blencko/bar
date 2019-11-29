@@ -1,0 +1,44 @@
+<nb-layout>
+
+  <nb-layout-header subheader>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 col-sm-6 col-3">
+          <a href="#" class="mobile-button d-lg-none d-md-none" (click)="toggleMobile()"><i class="fa fa-bars"></i></a>
+        </div>
+        <div class="col-md-10 col-sm-6 col-9 text-right">
+          <nb-user class="text-left" name="{{filterName(user.nome)}}" title="Último acesso em {{date}}"></nb-user>
+        </div>
+      </div>
+    </div>
+  </nb-layout-header>
+
+  <nb-sidebar>
+    <button class="btn-menu" (click)="toggle()"><i class="fa fa-chevron-left"></i></button>
+    <header class="text-center">
+      <a href="/"><img src="assets/images/logo.png" alt=""></a>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false"><i class="fa fa-bars"></i> {{filterName(user.nome)}} | {{user.documento}} <i
+              class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="#">Perfil</a>
+              <a href="#">Sair</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <nb-menu [items]="menu"></nb-menu>
+    <button class="btn btn-out text-uppercase">
+      <i class="icon-out"></i> Fazer logout
+    </button>
+  </nb-sidebar>
+
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>

@@ -1,0 +1,321 @@
+<div class="container-fluid animated fadeIn">
+  <app-header title="Cessão de Títulos" [inf]="data"></app-header>
+  <section>
+    <nb-card>
+      <nb-card-body>
+        <header>
+          <div class="row bottom">
+            <div class="col-md-6 col-12">
+              <div class="form" *ngIf="sitations.length > 0">
+                <p class="text-uppercase">Filtrar por</p>
+                <div class="row">
+                  <div class="col-md-8 col-sm-12">
+                    <nb-select (selectedChange)="handleSelectStatus($event)" placeholder="Situação Cadastral"
+                      [(selected)]="selectedItem">
+                      <nb-option value="">Situação Cadastral</nb-option>
+                      <nb-option *ngFor="let item of sitations" value="{{item.IdStatusCessao}}">{{item.Descricao}}
+                      </nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-12 text-right">
+              <button type="button" class="btn btn-clear text-uppercase">Adicionar em lote</button>
+              <button type="button" class="btn btn-success text-uppercase" (click)="open(dialog)"><i
+                  class="fa fa-plus"></i> Adicionar</button>
+            </div>
+          </div>
+        </header>
+        <section>
+          <ng2-smart-table class="table table-default table-align-top-lasted" [settings]="settings" [source]="items">
+          </ng2-smart-table>
+        </section>
+      </nb-card-body>
+    </nb-card>
+  </section>
+</div>
+
+
+<!-- MODAL REGISTER CESSAO -->
+<ng-template #dialog let-data let-ref="dialogRef" id="template-modal">
+  <div class="modal-custom moda-secondary animated fadeInUp">
+    <div class="row">
+      <div class="offset-1 col-sm-10 col-xs-12">
+        <nb-card [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="xlarge">
+          <nb-card-header>
+            <div class="row">
+              <div class="col-6">
+                <button *ngIf="FormSteps.step > 1 && FormSteps.step < 5" (click)="rowback()" type="button"
+                  class="btn btn-clear">
+                  <i class="fa fa-chevron-left"></i> Voltar
+                </button>
+              </div>
+              <div class="col-6">
+                <button (click)="closer(ref)" type="button" class="close">
+                  <span class="path-1"></span>
+                  <span class="path-2"></span>
+                </button>
+              </div>
+            </div>
+          </nb-card-header>
+          <nb-card-body>
+            <h2 *ngIf="FormSteps.step < 5">Escolha o(s) <br /> título(s) a ceder</h2>
+            <div class="row">
+
+              <div class="col-12" [ngClass]="{'col-md-8 col-sm-6': FormSteps.step < 5}">
+                <div *ngIf="FormSteps.step === 1" id="step-1" class="step-item">
+                  <div class="box steps">
+                    <h5 class="text-uppercase">Filtrar por</h5>
+                    <form class="form form-inline" [formGroup]="FormFilter">
+                      <div class="row bottom">
+                        <div class="col-md-6 col-12">
+
+                          <div class="form-group">
+                            <label for="date" class="block">Selecione uma data início / fim</label>
+                            <input placeholder="00/00/0000 até 00/00/0000" (change)="filterDate($event)" type="text"
+                              ngxDaterangepickerMd class="form-control" [locale]="locale" startKey="start"
+                              endKey="end" />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-12 text-right">
+                          <button type="button" class="btn btn-danger" *ngIf="filter" (click)="clear()">Limpar</button>
+                        </div>
+                      </div>
+                    </form>
+
+
+                    <table class="table" *ngIf="boletos.length > 0">
+                      <thead>
+                        <tr>
+                          <th>NOSSO NÚMERO</th>
+                          <th>EMISSÃO</th>
+                          <th>VENCIMENTO</th>
+                          <th>VALOR</th>
+                          <th>SITUAÇÃO BOLETO</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let boleto of boletos" [ngClass]="{'disabled': boleto.SITUACAO !== 'EM ABERTO'}">
+                          <td>{{boleto.NOSSONUMERO}}</td>
+                          <td>{{boleto.DATAEMISSAO | date}}</td>
+                          <td>{{boleto.DATAVENCIMENTO | date}}</td>
+                          <td>{{boleto.VLRREGISTROCONTABIL | currency}}</td>
+                          <td>{{boleto.SITUACAO}}</td>
+                          <td>
+                            <label class="container-box">
+                              <input type="checkbox" value="{{boleto.NOSSONUMERO}}"
+                                [checked]="handleCheck(boleto.NOSSONUMERO, 'boletos')"
+                                (change)="handleSelectBoletos($event, boleto)">
+                              <span class="checkmark"></span>
+                            </label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div *ngIf="FormSteps.step === 2" id="step-2" class="step-item">
+                  <div class="box" *ngFor="let item of type_cessoes">
+                    <div class="box-checkbox">
+                      <label class="container-box">
+                        <input type="radio" [(ngModel)]="FormSteps.modality" value="{{item.IdModalidade}}">
+                        <span class="checkmark"></span>
+                      </label>
+                      <div class="text">
+                        <h3>{{item.Descricao === 'CessÃ£o Simples' ? 'Cessão Simples' : item.Descricao}}</h3>
+                        <p>Só poderá ser selecionado um cessionário
+                          para essa modalidade de cessão.</p>
+                        <div class="select-custom"
+                          [ngClass]="{'disabled':FormSteps.modality && FormSteps.modality != item.IdModalidade}">
+
+                          <span class="text-uppercase"
+                            [ngClass]="{'active': FormSteps.sub_modality == 'integral' && FormSteps.modality == item.IdModalidade}"
+                            #simpleIntegral
+                            (click)="handleSelect('integral', simpleIntegral, item.IdModalidade)">Integral</span>
+
+
+                          <span class="text-uppercase"
+                            [ngClass]="{'active': FormSteps.sub_modality == 'participação' && FormSteps.modality == item.IdModalidade}"
+                            #simpleParticipation
+                            (click)="handleSelect('participação', simpleParticipation, item.IdModalidade)">C/
+                            Participação</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="FormSteps.step === 3" id="step-3" class="step-item">
+                  <div class="box steps">
+                    <div class="form search-form">
+                      <div class="form-group">
+                        <input type="text" id="search" (keyup)="filterName($event)" nbInput fullWidth
+                          placeholder="Procurar por nome">
+                        <label class="label-icon"><i class="fa fa-search"></i></label>
+                      </div>
+                    </div>
+
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>CNPJ</th>
+                          <th>Nome</th>
+                          <th>SITUAÇÃO Cadastral</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let cessionario of cessionarios"
+                          [ngClass]="{'disabled': cessionario.IdStatusCessionario !== 3}">
+                          <!-- <tr *ngFor="let cessionario of cessionarios"> -->
+                          <td>{{cessionario.CNPJ | cpfcnpj}}</td>
+                          <td class="text-uppercase">{{cessionario.Nome}}</td>
+                          <td>{{cessionario.IdStatusCessionario | statusPedido}}</td>
+                          <td>
+                            <label class="container-box">
+                              <input type="checkbox" [checked]="handleCheck(cessionario.IdCessionario, 'cessionarios')"
+                                (change)="handleSelectCessionario($event, cessionario)">
+                              <span class="checkmark"></span>
+                            </label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div *ngIf="FormSteps.step === 4" id="step-4" class="step-item">
+                  <div class="box steps reverse">
+
+                    <div class="group-radios">
+                      <label class="container-box" *ngFor="let item of regraratio">
+                        <input type="radio" [(ngModel)]="FormSteps.type_value" value="{{item.IdTipoRegraRateio}}">
+                        <span class="checkmark"></span>
+                        {{item.Descricao}}
+                      </label>
+                    </div>
+
+
+                    <table class="table reverse">
+                      <thead>
+                        <tr>
+                          <th class="text-left">Cessionários ({{FormSteps.cessionarios.length}})</th>
+                          <th></th>
+                          <th class="text-right">R$ ou %</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="FormSteps.cessionarios.length > 0">
+                        <tr *ngFor="let cessionario of FormSteps.cessionarios; let i = index"
+                          [ngClass]="{'disabled': FormSteps.type_value === 0}">
+                          <td class="text-left">{{cessionario.CNPJ | cpfcnpj}}</td>
+                          <td class="text-left text-uppercase">{{cessionario.Nome}}</td>
+                          <td class="text-right">
+                            <input data-mask="currency" [(ngModel)]="FormSteps.cessionarios[i].value" type="text"
+                              nbInput fullWidth placeholder="Valor" (blur)="updateValue(cessionario)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="total-value text-right">
+                      <span *ngIf="FormSteps.type_value == 2">R$</span>
+                      {{FormSteps.total | currencyTotal}}
+                      <span *ngIf="FormSteps.type_value == 1">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="FormSteps.step === 5" id="step-5" class="step-item">
+                  <div class="extract">
+                    <div class="title">
+                      Deseja {{FormSteps.IdCessao ? 'completar' : 'reservar'}} <br /> a cessão?
+                    </div>
+                    <div class="resume">
+                      <h4 class="text-uppercase">Resumo</h4>
+                      <ul>
+                        <li>
+                          <div class="item">Valor da Cessão</div>
+                          <div class="item">{{dataBox[0].value | currency}}</div>
+                        </li>
+                        <li>
+                          <div class="item">Modalidade</div>
+                          <div class="item">{{FormSteps.modality === '1' ? 'Cessão Simples' : 'Split'}}</div>
+                        </li>
+                        <li>
+                          <div class="item">Qnt. Cessionários</div>
+                          <div class="item">{{dataBox[2].value}}</div>
+                        </li>
+                        <li class="no-flex">
+                          <div class="flex">
+                            <div class="item">Regra de Rateio</div>
+                            <div class="item">{{FormSteps.type_value == 1 ? 'Percentual' : 'Valor Fixo (R$)'}}
+                            </div>
+                          </div>
+                          <ul>
+                            <li *ngFor="let cessionario of FormSteps.cessionarios">
+                              <div class="item">{{cessionario.Nome}}</div>
+                              <div class="item">
+                                {{FormSteps.type_value == 1 ? (cessionario.value | currencyTotal) + '%' : 'R$' + (cessionario.value | currencyTotal)}}
+                              </div>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                      <ul class="no-border">
+                        <li>
+                          <div class="item">Custo</div>
+                          <div class="item">{{coast | currency}}</div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="group-buttons">
+                    <button class="btn btn-outline"
+                      (click)="incomplet(ref)">{{FormSteps.IdCessao ? 'Excluir Cessão' : 'Cancelar'}}</button>
+                    <button class="btn btn-primary"
+                      (click)="next()">{{FormSteps.IdCessao ? 'Completar Cessão' : 'Reservar'}}</button>
+                  </div>
+                </div>
+                <div *ngIf="FormSteps.step === 6" id="step-6" class="step-item">
+                  <h2>Cessão reservada<br />com sucesso!</h2>
+                  <button class="btn btn-outline btn-round" (click)="closer(ref)">Ok</button>
+                </div>
+              </div>
+
+              <div class="col-md-4 col-sm-6 col-12" *ngIf="FormSteps.step < 5">
+                <div class="box steps-control">
+                  <h5>Resumo</h5>
+                  <nb-progress-bar [ngClass]="'progress'+FormSteps.progress" [value]="FormSteps.progress" size="xs">
+                  </nb-progress-bar>
+                  <ul>
+                    <li>
+                      {{dataBox[0].text}} <span>{{dataBox[0].value | currency}}</span>
+                    </li>
+                    <li>
+                      {{dataBox[1].text}}
+                      <span>{{FormSteps.modality ? (FormSteps.modality === '1' ? 'Cessão Simples' : 'Split') : '-'}}
+                        {{FormSteps.sub_modality ? (FormSteps.sub_modality === 'integral' ? FormSteps.sub_modality : 'c/ participação') : ''}}</span>
+                    </li>
+                    <li>
+                      {{dataBox[2].text}} <span>{{dataBox[2].value}}</span>
+                    </li>
+                    <li>
+                      {{dataBox[3].text}} <span>{{dataBox[3].value}}</span>
+                    </li>
+                  </ul>
+                  <hr />
+                  <div class="footer text-center">
+                    <button class="btn btn-success" [disabled]="handleValidation()" (click)="next()">Próximo <i
+                        class="fa fa-chevron-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </div>
+</ng-template>

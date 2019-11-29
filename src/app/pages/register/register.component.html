@@ -1,0 +1,125 @@
+<div id="register" class="nb-theme-default">
+  <div class="box-wrapper">
+    <nb-card *ngIf="!verifyStatus" [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="xlarge">
+      <nb-card-header class="text-center">
+        <div class="logo"><img src="assets/images/logo.png" alt=""></div>
+        <h2 *ngIf="success">Cadastro de Cessionário</h2>
+        <h5 *ngIf="success" class="text-center">Prezado Marcelo, você foi convidado a complementar seu cadastro pelo <br /> João Andrade
+          para que possa
+          participar de cessão de titulos.
+        </h5>
+        <h5 class="text-center">Por favor, complemente seus dados abaixo.</h5>
+      </nb-card-header>
+      <nb-card-body>
+        <h4 *ngIf="success" class="animated fadeIn">Dados atualiados com sucesso. Obrigado!</h4>
+        <form *ngIf="!success" [formGroup]="FormRegister" (ngSubmit)="save(FormRegister.value)" class="form form-default">
+          <!-- <pre>{{FormRegister.value | json}}</pre> -->
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group active">
+                <label for="name">Nome Cessionário/Cedent0e</label>
+                <input type="text" fullWidth disabled nbInput value="{{cessionario.Nome}}">
+              </div>
+            </div>
+          </div>
+
+          <fieldset>
+            <h6>Dados Básicos</h6>
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="cnpj">CNPJ</label>
+                  <input type="text" fullWidth disabled nbInput value="{{cessionario.CNPJ | cpfcnpj}}">
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="email">E-mail</label>
+                  <input type="text" fullWidth disabled nbInput value="{{cessionario.Email}}">
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="phone">Telefone</label>
+                  <input type="text" id="phone" formControlName="phone" data-mask="cellphone_with_ddd" appFormActions
+                    required nbInput fullWidth />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <h6>Forma de Pagamento/Dados Bancários</h6>
+            <div class="row" formGroupName="bank">
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="name">Banco</label>
+                  <select2 [data]="banks" (valueChanged)="changeBank($event)"></select2>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="name">Agência</label>
+                  <select2 [disabled]="disabled" [data]="agencies" (valueChanged)="changeAgencies($event)"></select2>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="account">Conta</label>
+                  <input type="number" id="account" formControlName="account" appFormActions required nbInput
+                    fullWidth />
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="typeOfAccount">Tipo de conta</label>
+                  <select2 [data]="typeAccount" (valueChanged)="changeTypeAccount($event)"></select2>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="endCredit">Finalidade de crédito</label>
+                  <select2 [data]="endCredit" (valueChanged)="changeEndCredit($event)"></select2>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="peopleContact">Pessoa contato</label>
+                  <input type="text" id="peopleContact" formControlName="people_contact" data-mask="cellphone_with_ddd"
+                    appFormActions required nbInput fullWidth />
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group active">
+                  <label for="name">Tipo de pagamento</label>
+                  <select2 [data]="typePayment" (valueChanged)="changeTypePayment($event)"></select2>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <div class="form-group">
+              <textarea required nbInput fullWidth shape="round" rows="8" placeholder="Obsevação"
+                formControlName="observation"></textarea>
+            </div>
+          </fieldset>
+
+          <div class="text-center">
+            <button type="button" (click)="reject()" class="btn btn-danger text-uppercase">Rejeitar convite</button>
+            <button type="submit" [disabled]="!FormRegister.valid" class="btn btn-success text-uppercase">Enviar
+              cadastro</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    <nb-card *ngIf="verifyStatus">
+      <h2 class="text-center msgm-verify">Usuário já cadastrado ou token inválido</h2>
+    </nb-card>
+  </div>
+</div>

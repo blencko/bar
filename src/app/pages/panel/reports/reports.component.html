@@ -1,0 +1,57 @@
+<div id="reports" class="container-fluid animated fadeIn">
+  <app-header title="Relatórios" [inf]="data"></app-header>
+  <section>
+    <nb-tabset>
+      <nb-tab tabTitle="Cessões">
+        <nb-card [nbSpinner]="loginRequest" nbSpinnerStatus="primary">
+          <nb-card-body>
+            <header>
+              <div class="row bottom">
+                <div class="col-md-9 col-12">
+                  <div class="form" *ngIf="status_cessao.length > 0">
+                    <p class="text-uppercase">Filtrar por</p>
+                    <div class="row">
+                      <div class="col-md-8 col-sm-12">
+                        <nb-select (selectedChange)="filterStatus($event)" placeholder="Situação Cadastral"
+                          [(selected)]="selectedItemCessao">
+                          <nb-option value="">Situação Cadastral</nb-option>
+                          <nb-option *ngFor="let item of status_cessao" value="{{item.IdStatusCessao}}">
+                            {{item.Descricao}}
+                          </nb-option>
+                        </nb-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-12 text-right">
+                  <button type="button" class="btn btn-clear btn-image text-uppercase" (click)="export('cessoes')">
+                    <img src="../../../../assets/images/export.png" /> Exportar</button>
+                </div>
+              </div>
+            </header>
+            <section>
+              <ng2-smart-table class="table table-default" id="table-reports" [settings]="settingsCessoes"
+                [source]="cessoes">
+              </ng2-smart-table>
+            </section>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+      <nb-tab tabTitle="Títulos">
+        <nb-card [nbSpinner]="loginRequest" nbSpinnerStatus="primary">
+          <nb-card-body>
+            <header class="text-right">
+              <button type="button" class="btn btn-clear btn-image text-uppercase" (click)="export('titulos')">
+                <img src="../../../../assets/images/export.png" /> Exportar</button>
+            </header>
+            <section>
+              <ng2-smart-table class="table table-default" id="table-reports-titulos" [settings]="settingsTitulos"
+                [source]="titulos">
+              </ng2-smart-table>
+            </section>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </section>
+</div>

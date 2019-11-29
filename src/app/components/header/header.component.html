@@ -1,0 +1,16 @@
+<header class="header-default">
+  <div class="row">
+    <div class="col-lg-8 col-sm-6 col-xs-12">
+      <h1>{{title}} {{name}}</h1>
+      <h5>{{date}}</h5>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12 text-right">
+      <div class="block-info" *ngIf="inf && inf.length > 0">
+        <div class="item" *ngFor="let item of inf">
+          <span class="text-uppercase" [ngClass]="{'active': item.active}">{{item.label}}</span>
+          {{item.number}}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

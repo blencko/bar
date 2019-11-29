@@ -1,0 +1,104 @@
+@font-face {
+  font-family: "icomoon";
+  src: url("../fonts/layout/icomoon.eot?egryd0");
+  src: url("../fonts/layout/icomoon.eot?egryd0#iefix") format("embedded-opentype"),
+    url("../fonts/layout/icomoon.ttf?egryd0") format("truetype"),
+    url("../fonts/layout/icomoon.woff?egryd0") format("woff"),
+    url("../fonts/layout/icomoon.svg?egryd0#icomoon") format("svg");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "icomoon";
+  src: url('../fonts/layout/icon-cedente.eot?eupr9q');
+  src: url("../fonts/layout/icon-cedente.eot?egryd0#iefix") format("embedded-opentype"),
+    url("../fonts/layout/icon-cedente.ttf?egryd0") format("truetype"),
+    url("../fonts/layout/icon-cedente.woff?egryd0") format("woff"),
+    url("../fonts/layout/icon-cedente.svg?egryd0#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak-as: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-user-plus .path1,
+.icon-user-plus .path2,
+.icon-user-plus .path3,
+.icon-user-plus .path4 {
+  font-family: inherit;
+}
+
+.icon-currency:before {
+  content: "\e905";
+}
+
+.icon-home:before {
+  content: "\e907";
+}
+
+.icon-reports:before {
+  content: "\e908";
+}
+
+.icon-users:before {
+  content: "\e909";
+}
+
+.icon-trash:before {
+  content: "\e900";
+}
+
+.icon-user-plus .path1:before {
+  content: "\e901";
+  color: rgb(112, 112, 112);
+}
+
+.icon-user-plus .path2:before {
+  content: "\e902";
+  margin-left: -1.0400390625em;
+  color: rgb(112, 112, 112);
+}
+
+.icon-user-plus .path3:before {
+  content: "\e903";
+  margin-left: -1.0400390625em;
+  color: rgb(112, 112, 112);
+}
+
+.icon-user-plus .path4:before {
+  content: "\e904";
+  margin-left: -1.0400390625em;
+  color: rgb(102, 198, 85);
+}
+
+.icon-out:before {
+  content: "\e906";
+}
+
+
+
+.icon-liquidation:before {
+  content: "\e1000";
+}
+
+.icon-event {
+  font-size: 22px !important;
+}
+
+.icon-event:before {
+  content: "\e1001";
+}

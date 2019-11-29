@@ -1,0 +1,178 @@
+<div id="dashboard" class="container-fluid animated fadeIn">
+  <app-header title="Olá," [name]="user.nome" [inf]="user.cedente ? data : false"></app-header>
+  <section>
+    <div class="row" *ngIf="user.cedente">
+      <div class="col-lg-3 col-md-12 col-12">
+        <div class="calendar">
+          <div class="item-calendar active" *ngIf="cessoes.length === 0">
+            <div class="body-calendar">
+              <h3 class="h3">Cessões <br /> Liquidadas</h3>
+              <h5 class="notfound">Sem cessões no momento</h5>
+            </div>
+          </div>
+          <div class="item-calendar" *ngFor="let item of cessoes; let i = index;"
+            [ngClass]="{'active': activeCalendar === i}">
+            <div class="body-calendar">
+              <h3 class="h3">Cessões <br /> Liquidadas</h3>
+              <div class="actions">
+                <button *ngIf="i !== 0" class="btn btn-link" (click)="prev(i  + 1)"><i
+                    class="fa fa-chevron-left"></i></button>
+                <span>{{item.data_cadastro | date:'DD'}} de {{item.data_cadastro  | date:'MMMM'}},
+                  {{item.data_cadastro | date:'YYYY'}}</span>
+                <button *ngIf="cessoes.length > 1" class="btn btn-link" (click)="next(i  - 1)"><i
+                    class="fa fa-chevron-right"></i></button>
+              </div>
+              <div class="date bigSize">{{item.titulos.length}}</div>
+            </div>
+            <div class="footer-calendar">
+              <div class="content">
+                <div class="item">
+                  valor
+                </div>
+                <div class="item text-right">
+                  R$ {{item.ValorCessao | currency:'BRL'}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-12 col-12">
+        <nb-card>
+          <nb-card-body>
+            <header>
+              <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                  <h3>Fila de Liquidação</h3>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12 text-right">
+                  <div class="currency">
+                    <span class="label text-uppercase">Valor Total</span> <br />
+                    R$ <span class="big">{{totalValue | currency:'BRL'}}</span>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <section>
+              <table class="table table-default">
+                <thead>
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">QTDE DE BOLETOS</th>
+                    <th class="text-center">QTDE DE CESSIONÁRIOS</th>
+                    <th class="text-center">MODALIDADE</th>
+                    <th class="text-center">REGRA DE RATEIO</th>
+                    <th class="text-center">VALOR </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of cessoes">
+                    <td class="text-center">{{item.IdCessao}}</td>
+                    <td class="text-center">{{item.QtdeTitulos}}</td>
+                    <td class="text-center">{{item.cessionarios.length}}</td>
+                    <td class="text-center">{{item.IdTipoRegraRateio == 1 ? 'Percentual' : 'Valor fixo'}}</td>
+                    <td class="text-center">{{item.IdModalidade == 1 ? 'Cessão Simples' : 'Split'}}</td>
+                    <td class="text-center">{{item.ValorCessao | currency:'BRL'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <nb-card-body>
+            <header class="secondy">
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <h3>Cessionários</h3>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                  <div class="block-info">
+                    <div class="item">
+                      Ativos <span class="active">{{data_cessionarios[0].number}}</span>
+                    </div>
+                    <div class="item">
+                      Incompletos <span>{{data_cessionarios[1].number}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <section>
+              <table class="table table-default">
+                <thead>
+                  <tr>
+                    <th>CNPJ</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of cessionarios">
+                    <td class="text-center" width="170">{{item.documentation}}</td>
+                    <td class="text-center">{{item.name}}</td>
+                    <td class="text-center">{{item.email}}</td>
+                    <td class="text-center">{{item.situation}}</td>
+                    <td class="text-right">
+                      <button type="button" class="btn btn-link">
+                        Cobrar Complemento <i class="fa fa-chevron-right"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+    <div class="row cessionario" *ngIf="user.cessionario">
+      <div class="col-lg-3 col-md-12 col-12">
+        <div class="calendar">
+          <div class="item-calendar active" *ngIf="cessoes.length === 0">
+            <div class="body-calendar">
+              <h3 class="h3">Liquidações</h3>
+              <!-- <h5 class="notfound">Sem liquidações no momento</h5> -->
+            </div>
+          </div>
+          <div class="list-liquidation">
+            <ul>
+              <li>
+                <div class="label">Abertas</div>
+                <div class="number" *ngFor="let item of abertas">{{item}}</div>
+              </li>
+              <li>
+                <div class="label">Pagas</div>
+                <div class="number" *ngFor="let item of pagas">{{item}}</div>
+              </li>
+              <li>
+                <div class="label">Baixadas</div>
+                <div class="number disabled" *ngFor="let item of baixadas">{{item}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-12 col-12">
+        <nb-card>
+          <nb-card-header>
+            <h2>Eventos</h2>
+          </nb-card-header>
+          <nb-card-body class="padding">
+            <table class="table table-default">
+              <tbody>
+                <tr *ngFor="let item of events">
+                  <td class="text-left" width="170">{{item.company}}</td>
+                  <td class="text-left">{{item.msgm}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </section>
+</div>

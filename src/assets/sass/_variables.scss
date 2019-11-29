@@ -1,0 +1,51 @@
+// Colors
+$primary: #3C625E;
+$secondary: #3E6F4E;
+$gray:#707070;
+$energize: #F8D96F;
+$dark:#000;
+$light: #fff;
+$success: #66C655;
+
+// Fonts sizes
+$bigSize: 61px;
+$h1: 56px;
+$h2: 54px;
+$h3:28px;
+$h4:16px;
+
+// Fonts Familys
+$fontAvenir: "Avenir Next LT Pro", sans-serif;
+$fontArial: "Arial", sans-serif;
+
+
+// Global
+
+.h1 {
+    font-size: $h1;
+}
+
+.h2 {
+    font-size: $h2;
+}
+
+.h3 {
+    font-size: $h3;
+}
+
+.h4 {
+    font-size: $h4;
+}
+
+.bigSize {
+    font-size: $bigSize;
+}
+
+
+// GRIDS
+
+$lg: 1200px;
+$md: 992px;
+$sm: 768px;
+$xs: 576px;
+$exs: 480px;

@@ -1,0 +1,12 @@
+.form-group {
+  .form-control {
+    border-radius: 30px;
+    height: 42px;
+    border: 1px solid #d1d1d1;
+    color: #000;
+
+    &:focus {
+      border-color: #3c625e;
+    }
+  }
+}

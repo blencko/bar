@@ -1,0 +1,207 @@
+// Responsive template
+
+
+// Large screen
+@media (max-width: $lg) {
+    .header-default {
+        font-size: 48px;
+    }
+    .nb-theme-default{
+        nb-sidebar {
+            width: 220px;
+            .main-container {
+                width: 220px;
+                .scrollable {
+                    header {
+                        .nav.navbar-nav {
+                            li {
+                                a {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .block-info {
+        .item {
+            font-size: 46px;
+            span {
+                font-size: 10px;
+            }
+        }
+    }
+
+    .calendar {
+        .body-calendar {
+            padding: 15px;
+            h3 {
+                font-size: 18px;
+            }
+            .actions {
+                margin-left: -11px;
+            }
+            .date {
+                &.bigSize {
+                    font-size: 48px;
+                }
+            }
+        }
+        .footer-calendar {
+            .content {
+                display: block;
+                text-align: center;
+                .item {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+// Medium Screen
+@media (max-width: $md) {
+    .calendar {
+        width: 60%;
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        .body-calendar {
+            padding: 30px;
+            h3 {
+                font-size: 38px;
+            }
+            .actions {
+                margin-left: 0;
+            }
+            .date {
+                &.bigSize {
+                    font-size: 68px;
+                }
+            }
+        }
+        .footer-calendar {
+            .content {
+                display: flex;
+                .item {
+                    display: block;
+                }
+            }
+        }
+    }
+    #register {
+        padding: 15px;
+        .box-wrapper {
+            width: 100%;
+            h2 {
+                font-size: 32px;
+                text-align: center;
+            }
+            h5 {
+                font-size: 14px;
+                text-align: center;
+                br {
+                    display: none;
+                }
+            }
+            nb-card {
+                padding: 0;
+            }
+        }
+    }
+}
+
+// Small Screen
+@media (max-width: $sm) {
+    .nb-theme-default {
+        nb-sidebar {
+            width: 40vw;
+            position: fixed;
+            transform: translateX(-100%);
+            transition:all 250ms;
+            &.compacted {
+                width: 40vw;
+                transform: translateX(0);
+                nb-menu {
+                    width: 100%;
+                    .menu-items {
+                        .menu-item {
+                            a {
+                                span {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+                }
+                .main-container {
+                    width: 40vw;
+                }
+            }
+        }
+        nb-layout {
+            .layout {
+                .layout-container {
+                    .content {
+                        .columns {
+                            nb-layout-column {
+                                padding: 15px 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Smathphone Screen
+@media (max-width: $xs) {
+    .header-default {
+        h1, h5 {
+            text-align: center;
+        }
+        .block-info {
+            text-align: center;
+            margin-bottom: 0px;
+        }
+        h1 {
+            font-size: 40px;
+        }
+        h5 {
+            font-size: 14px;
+        }
+        .block-info {
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 30px;
+        }
+    }
+    .nb-theme-default {
+        nb-sidebar {
+            width: 80vw;
+            transform: translateX(-80vw);
+            &.compacted {
+                width: 80vw;
+                .main-container {
+                    width: 80vw;
+                }
+            }
+        }
+    }
+    .calendar {
+        width: 100%;
+    }
+}
+
+// Extra Smarthphone Screen
+@media (max-width: $exs) {
+    .block-info {
+        .item {
+            padding: 0 15px;
+        }
+    }
+}
